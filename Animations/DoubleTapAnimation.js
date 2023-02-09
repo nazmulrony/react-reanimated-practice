@@ -6,17 +6,20 @@ import {
     Text,
     View,
 } from "react-native";
-import React, { useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import { TapGestureHandler } from "react-native-gesture-handler";
 import Animated, {
     useAnimatedStyle,
     useSharedValue,
     withDelay,
     withSpring,
+    withTiming,
 } from "react-native-reanimated";
 
 const DoubleTapAnimation = () => {
     const scale = useSharedValue(0);
+    const opacity = useSharedValue(1);
+    //this ref help to identify number of taps perfectly
     const doubleTapRef = useRef();
     const AnimatedImage = Animated.createAnimatedComponent(Image);
     const imageUri =
@@ -26,11 +29,23 @@ const DoubleTapAnimation = () => {
             transform: [{ scale: Math.max(scale.value, 0) }],
         };
     });
+    const rTextStyle = useAnimatedStyle(() => {
+        return {
+            opacity: opacity.value,
+        };
+    });
 
-    const handleDoubleTap = () => {
+    const handleDoubleTap = useCallback(() => {
         scale.value = withSpring(1, undefined, (isFinished) => {
             if (isFinished) {
-                scale.value = withDelay(500, withSpring(0));
+                scale.value = withDelay(300, withSpring(0));
+            }
+        });
+    }, []);
+    const handleSingleTap = () => {
+        opacity.value = withTiming(0, undefined, (isFinished) => {
+            if (isFinished) {
+                opacity.value = withDelay(500, withTiming(1));
             }
         });
     };
@@ -38,7 +53,7 @@ const DoubleTapAnimation = () => {
         <View style={styles.container}>
             <TapGestureHandler
                 waitFor={doubleTapRef}
-                onActivated={() => console.log("Single tap")}
+                onActivated={handleSingleTap}
             >
                 <TapGestureHandler
                     maxDelayMs={250}
@@ -61,6 +76,9 @@ const DoubleTapAnimation = () => {
                                 resizeMode="center"
                             />
                         </ImageBackground>
+                        <Animated.Text style={[styles.text, rTextStyle]}>
+                            🐢🐢🐢🐢🐢🐢
+                        </Animated.Text>
                     </Animated.View>
                 </TapGestureHandler>
             </TapGestureHandler>
@@ -82,5 +100,10 @@ const styles = StyleSheet.create({
         width: SIZE,
         height: SIZE,
         // flex: 1,
+    },
+    text: {
+        fontSize: 24,
+        textAlign: "center",
+        marginTop: 16,
     },
 });

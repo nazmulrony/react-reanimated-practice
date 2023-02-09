@@ -7,6 +7,7 @@ import DoubleTapAnimation from "./Animations/DoubleTapAnimation";
 import InterpolateAnimation from "./Animations/InterpolateAnimation";
 import PanGestureHandlerAnimation from "./Animations/PanGestureHandler";
 import PinchGestureAnimation from "./Animations/PinchGestureAnimation";
+import ScrollView from "./Animations/ScrollView";
 export default function App() {
     return (
         <GestureHandlerRootView style={styles.container}>
@@ -16,7 +17,8 @@ export default function App() {
             {/* <InterpolateAnimation /> */}
             {/* <ColorInterPolationAnimation /> */}
             {/* <PinchGestureAnimation /> */}
-            <DoubleTapAnimation />
+            {/* <DoubleTapAnimation /> */}
+            <ScrollView />
         </GestureHandlerRootView>
     );
 }

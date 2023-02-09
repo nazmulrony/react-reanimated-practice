@@ -22,9 +22,9 @@ const PinchGestureAnimation = () => {
         "https://images.unsplash.com/photo-1674924428961-f106fb5d91c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80";
     const pinchGestureHandler = useAnimatedGestureHandler({
         onStart: (event, ctx) => {
-            ctx.scale = event.scale;
-            ctx.focalX = event.focalX;
-            ctx.focalY = event.focalY;
+            ctx.scale = scale.value;
+            ctx.focalX = focalX.value;
+            ctx.focalY = focalY.value;
         },
         onActive: (event, ctx) => {
             // scale.value = event.scale + ctx.scale;
@@ -36,7 +36,7 @@ const PinchGestureAnimation = () => {
         },
         onEnd: (event, ctx) => {
             // scale.value = event.scale + ctx.scale;
-            scale.value = withTiming(1);
+            // scale.value = withTiming(1);
         },
     });
     const rStyle = useAnimatedStyle(() => {
